@@ -41,14 +41,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
         TextView authorTextView = (TextView) listView.findViewById(R.id.author_text);
         authorTextView.setText(currentBook.getAuthor());
 
-       /* //Updating currency text View
-        TextView currencyTextView = (TextView) listView.findViewById(R.id.currency_text);
-        currencyTextView.setText(currentBook.getCurrency());
 
-        //Updating price text View
-        TextView priceTextView = (TextView) listView.findViewById(R.id.price_text);
-        priceTextView.setText(currentBook.getPrice());
-*/
         return listView;
     }
 }

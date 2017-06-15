@@ -9,15 +9,11 @@ public class Book {
     //Global member variables declaration
     private String mTitle;
     private String mAuthor;
-   /* private String mCurrency;
-    private String mPrice;
-*/
+
     //Constructor declaration
     Book (String title, String author){
         mTitle = title;
         mAuthor = author;
-        /*mCurrency = currency;
-        mPrice = price;*/
     }
 
     //Getter methods declaration
@@ -26,7 +22,4 @@ public class Book {
 
     public String getAuthor(){ return mAuthor; }
 
-   /* public String getCurrency(){ return mCurrency; }
-
-    public String getPrice(){ return mPrice;}*/
 }

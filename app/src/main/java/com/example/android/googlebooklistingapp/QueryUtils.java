@@ -143,37 +143,17 @@ public class QueryUtils {
                 JSONObject volumeInfoObject = currentBook.getJSONObject("volumeInfo");
                 String title = volumeInfoObject.getString("title");
 
-                String author= "";
-                if((volumeInfoObject.getJSONArray("authors")) != null){
+                String author= "Author: ";
+                if(volumeInfoObject.has("authors")){
                     JSONArray authors = volumeInfoObject.getJSONArray("authors");
                     for(int j=0; j<authors.length(); j++){
-                        author = authors.getString(j) +",";
+                        author = author+authors.getString(j) +",";
                     }
 
                     author = author.substring(0, author.length()-1);
-                }
-
-
-/*
-                JSONObject saleInfoObject = currentBook.getJSONObject("saleInfo");
-
-                String price;
-                String currency;
-
-                if((saleInfoObject.getJSONObject("listPrice"))!=null){
-
-                    JSONObject listPrice = saleInfoObject.getJSONObject("listPrice");
-                    price = listPrice.getString("amount");
-                    currency = listPrice.getString("currencyCode");
                 }else{
-                    price = "Free";
-                    currency = "";
-
+                    author = author + "No author found";
                 }
-*/
-
-
-
 
                 Book book = new Book(title,author);
                 books.add(book);
