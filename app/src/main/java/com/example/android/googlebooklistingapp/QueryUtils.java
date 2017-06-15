@@ -106,6 +106,12 @@ public class QueryUtils {
      */
     public static ArrayList<Book> fetchBooks (String requestUrl){
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
        URL url = createUrl(requestUrl);
 
         String jsonResponse = null;

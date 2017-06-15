@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         bookListView.setEmptyView(mEmptyStateTextView);
 
+        // Hide loading indicator because the data has been loaded
+        final View loadingIndicator = findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+
         adapter = new BookAdapter(this, 0, new ArrayList<Book>());
 
         bookListView.setAdapter(adapter);
@@ -67,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 String searchText = searchTextView.getText().toString();
                 searchText.replace(" ","");
                 QUERY_URL = QUERY_URL+searchText;
+
+                loadingIndicator.setVisibility(View.VISIBLE);
 
                 if(isInternetConnectionAvailable()){
                     loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     private boolean isInternetConnectionAvailable(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }
 
