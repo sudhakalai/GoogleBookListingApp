@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public class BookLoader extends AsyncTaskLoader<ArrayList<Book>> {
-    /** Query URL */
+    // Query URL
     private String mUrl;
 
     public BookLoader(Context context, String url) {
@@ -23,9 +23,8 @@ public class BookLoader extends AsyncTaskLoader<ArrayList<Book>> {
         forceLoad();
     }
 
-    /**
-     * This is on a background thread.
-     */
+    //This is on a background thread.
+
     @Override
     public ArrayList<Book> loadInBackground() {
         if (mUrl == null) {

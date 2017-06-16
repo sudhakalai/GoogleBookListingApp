@@ -68,7 +68,7 @@ public class QueryUtils {
 
         } catch (IOException e) {
             // TODO: Handle the exception
-            Log.e(LOG_TAG, "makeHttpRequest: IOExpection occurred ",e );
+            Log.e(LOG_TAG, "makeHttpRequest: IOException occurred ",e );
 
 
         } finally {

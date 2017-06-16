@@ -2,35 +2,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="8dp">
+    android:paddingTop="@dimen/activity_top_padding">
 
     <LinearLayout
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchView">
-    <EditText
-        android:id="@+id/search"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:paddingLeft="16dp"
-        android:hint="Search a book"
-        android:inputType="textMultiLine" />
-     <Button
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="1"
-         android:text="Search"
-         android:backgroundTint="#439889"
-         android:id="@+id/searchButton"/>
+        android:layout_height="wrap_content">
+
+        <!-- Search layout -->
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="@dimen/zero_dips"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/search_a_book"
+            android:inputType="textMultiLine"
+            android:paddingLeft="@dimen/activity_left_padding" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="@dimen/zero_dips"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/search" />
 
     </LinearLayout>
 
+    <!-- List view -->
+
     <ListView
         android:id="@+id/list_view"
-        android:layout_below="@id/searchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/searchView"
         android:orientation="vertical" />
 
     <!-- Empty view is only visible when the list has no items. -->
@@ -47,6 +54,6 @@
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

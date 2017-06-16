@@ -24,14 +24,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     private static String QUERY_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
-    /** TextView that is displayed when the list is empty */
-    private TextView mEmptyStateTextView;
+    private TextView mEmptyStateTextView; //empty textView initialization
 
-    /**
-     * Constant value for the earthquake loader ID. We can choose any integer.
-     * This really only comes into play if you're using multiple loaders.
-     */
-    private static final int BOOK_LOADER_ID = 1;
+    private static final int BOOK_LOADER_ID = 1; //assigning a loader id value
 
 
     BookAdapter adapter;
@@ -41,18 +36,18 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final LoaderManager loaderManager = getLoaderManager(); //initializing load manager
 
-
-            // Get a reference to the LoaderManager, in order to interact with loaders.
-           final LoaderManager loaderManager = getLoaderManager();
-
-        //Declaring a list view and attaching an adapter to it
+       /**creating a listView object and attaching an adapter to it.
+        * Setting empty view when there no items to display
+        * removing progress bar before search is performed
+        */
         final ListView bookListView = (ListView) findViewById(R.id.list_view);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         bookListView.setEmptyView(mEmptyStateTextView);
 
-        // Hide loading indicator because the data has been loaded
+
         final View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
@@ -61,6 +56,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         bookListView.setAdapter(adapter);
 
 
+        /**
+         * setting an onClickListener on the search button
+         * appending the searched term to the default url
+         * initiating the loader
+         */
         final EditText searchTextView = (EditText) findViewById(R.id.search);
 
 
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                     mEmptyStateTextView.setText(R.string.no_internet);
                 }
 
+                //reset the values
                 searchTextView.setText("");
                 QUERY_URL ="https://www.googleapis.com/books/v1/volumes?q=";
 
@@ -128,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     }
 
+    /**
+     * checks if there is internet connection or not
+     * @return a boolean value true or false
+     */
     private boolean isInternetConnectionAvailable(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

@@ -2,5 +2,9 @@
     <string name="app_name">Google Book Listing App</string>
     <string name="no_internet">No Internet connection</string>
     <string name="book_not_found">No Book found</string>
+    <string name="search">Search</string>
+    <string name="search_a_book">Search a book</string>
+    <string name="bookName">Crossing the chasm</string>
+    <string name="bookAuthor">Geoffrey Moore</string>
 
 </resources>
