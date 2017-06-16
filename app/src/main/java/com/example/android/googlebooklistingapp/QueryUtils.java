@@ -1,5 +1,7 @@
 package com.example.android.googlebooklistingapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -26,12 +28,13 @@ import static com.example.android.googlebooklistingapp.MainActivity.LOG_TAG;
 public class QueryUtils {
 
     //Declaring constructor
-    public QueryUtils(){}
+    public QueryUtils() {
+    }
 
     /**
      * Returns new URL object from the given string URL.
      */
-    private static URL createUrl(String stringUrl) {
+    public static URL createUrl(String stringUrl) {
         URL url = null;
         try {
             url = new URL(stringUrl);
@@ -47,7 +50,7 @@ public class QueryUtils {
      */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
-        if(url == null){
+        if (url == null) {
             return jsonResponse;
         }
         HttpURLConnection urlConnection = null;
@@ -59,16 +62,16 @@ public class QueryUtils {
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
             urlConnection.connect();
             int responseCode = urlConnection.getResponseCode();
-            if(responseCode == 200){
+            if (responseCode == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
-            }else {
-                Log.v(LOG_TAG, "makeHttpRequest: Response code shows error"+responseCode);
+            } else {
+                Log.v(LOG_TAG, "makeHttpRequest: Response code shows error" + responseCode);
             }
 
         } catch (IOException e) {
             // TODO: Handle the exception
-            Log.e(LOG_TAG, "makeHttpRequest: IOException occurred ",e );
+            Log.e(LOG_TAG, "makeHttpRequest: IOException occurred ", e);
 
 
         } finally {
@@ -104,15 +107,9 @@ public class QueryUtils {
     /**
      * Extracts the list of books
      */
-    public static ArrayList<Book> fetchBooks (String requestUrl){
+    public static ArrayList<Book> fetchBooks(String requestUrl) {
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-       URL url = createUrl(requestUrl);
+        URL url = createUrl(requestUrl);
 
         String jsonResponse = null;
 
@@ -131,11 +128,11 @@ public class QueryUtils {
      * Parses the json response
      */
 
-    private static ArrayList<Book> extractBooks(String bookJSON){
+    private static ArrayList<Book> extractBooks(String bookJSON) {
 
         ArrayList<Book> books = new ArrayList<>();
 
-        if(TextUtils.isEmpty(bookJSON)){
+        if (TextUtils.isEmpty(bookJSON)) {
             return null;
         }
 
@@ -143,33 +140,46 @@ public class QueryUtils {
             JSONObject jsonObject = new JSONObject(bookJSON);
             JSONArray itemsArray = jsonObject.getJSONArray("items");
 
-            for(int i=0; i<itemsArray.length(); i++){
+            for (int i = 0; i < itemsArray.length(); i++) {
                 JSONObject currentBook = itemsArray.getJSONObject(i);
 
                 JSONObject volumeInfoObject = currentBook.getJSONObject("volumeInfo");
                 String title = volumeInfoObject.getString("title");
 
-                String author= "Author: ";
-                if(volumeInfoObject.has("authors")){
+                String author = "Author: ";
+                if (volumeInfoObject.has("authors")) {
                     JSONArray authors = volumeInfoObject.getJSONArray("authors");
-                    for(int j=0; j<authors.length(); j++){
-                        author = author+authors.getString(j) +",";
+                    for (int j = 0; j < authors.length(); j++) {
+                        author = author + authors.getString(j) + ",";
                     }
 
-                    author = author.substring(0, author.length()-1);
-                }else{
+                    author = author.substring(0, author.length() - 1);
+                } else {
                     author = author + "No author found";
                 }
 
-                Book book = new Book(title,author);
+                String imgUrlString;
+                Bitmap bmp;
+                if (volumeInfoObject.has("imageLinks")) {
+                    JSONObject imageObject = volumeInfoObject.getJSONObject("imageLinks");
+                    imgUrlString = imageObject.getString("thumbnail");
+                    URL imgUrl = createUrl(imgUrlString);
+                    bmp = BitmapFactory.decodeStream(imgUrl.openConnection().getInputStream());
+                } else {
+                    bmp = null;
+                }
+
+                Book book = new Book(title, author, bmp);
                 books.add(book);
 
             }
 
 
-        }catch (JSONException e) {
+        } catch (JSONException e) {
 
             Log.e("QueryUtils", "Problem parsing the book JSON results", e);
+        } catch (IOException e) {
+            Log.e("QueryUtils", "Problem parsing image url link", e);
         }
 
         return books;
