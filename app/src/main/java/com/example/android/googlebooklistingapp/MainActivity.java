@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
            final LoaderManager loaderManager = getLoaderManager();
 
         //Declaring a list view and attaching an adapter to it
-        ListView bookListView = (ListView) findViewById(R.id.list_view);
+        final ListView bookListView = (ListView) findViewById(R.id.list_view);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         bookListView.setEmptyView(mEmptyStateTextView);
@@ -69,26 +69,22 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
             @Override
             public void onClick(View v) {
                 String searchText = searchTextView.getText().toString();
-                searchText.replace(" ","");
                 QUERY_URL = QUERY_URL+searchText;
 
                 loadingIndicator.setVisibility(View.VISIBLE);
 
                 if(isInternetConnectionAvailable()){
-                    loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
+                    loaderManager.restartLoader(BOOK_LOADER_ID, null, MainActivity.this);
                 }else{
                     mEmptyStateTextView.setText(R.string.no_internet);
                 }
 
                 searchTextView.setText("");
+                QUERY_URL ="https://www.googleapis.com/books/v1/volumes?q=";
+
 
             }
         });
-
-
-
-
-
 
     }
 
@@ -120,12 +116,14 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
             adapter.addAll(books);
         }
 
+
     }
 
     @Override
     public void onLoaderReset(Loader<ArrayList<Book>> loader) {
         // Loader reset, so we can clear out our existing data.
         adapter.clear();
+
 
 
     }
@@ -135,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
+
+
 }
 
 
