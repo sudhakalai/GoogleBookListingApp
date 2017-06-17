@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         bookListView.setEmptyView(mEmptyStateTextView);
 
-
         final View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
@@ -55,14 +54,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
         bookListView.setAdapter(adapter);
 
-
         /**
          * setting an onClickListener on the search button
          * appending the searched term to the default url
          * initiating the loader
          */
         final EditText searchTextView = (EditText) findViewById(R.id.search);
-
 
         Button searchButton =(Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +79,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 //reset the values
                 searchTextView.setText("");
                 QUERY_URL ="https://www.googleapis.com/books/v1/volumes?q=";
-
-
             }
         });
 
@@ -92,10 +87,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     @Override
     public Loader<ArrayList<Book>> onCreateLoader(int i, Bundle bundle) {
 
-
         // Create a new loader for the given URL
         return new BookLoader(this, QUERY_URL);
-
     }
 
     @Override
@@ -116,17 +109,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         if (books != null && !books.isEmpty()) {
             adapter.addAll(books);
         }
-
-
     }
 
     @Override
     public void onLoaderReset(Loader<ArrayList<Book>> loader) {
         // Loader reset, so we can clear out our existing data.
         adapter.clear();
-
-
-
     }
 
     /**
@@ -138,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
-
-
 }
 
 

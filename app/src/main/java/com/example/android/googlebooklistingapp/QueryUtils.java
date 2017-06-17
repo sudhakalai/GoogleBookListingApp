@@ -34,7 +34,7 @@ public class QueryUtils {
     /**
      * Returns new URL object from the given string URL.
      */
-    public static URL createUrl(String stringUrl) {
+    private static URL createUrl(String stringUrl) {
         URL url = null;
         try {
             url = new URL(stringUrl);
@@ -138,7 +138,12 @@ public class QueryUtils {
 
         try {
             JSONObject jsonObject = new JSONObject(bookJSON);
-            JSONArray itemsArray = jsonObject.getJSONArray("items");
+            JSONArray itemsArray = null;
+
+            if(jsonObject.has("items")){
+
+                itemsArray = jsonObject.getJSONArray("items");
+            }
 
             for (int i = 0; i < itemsArray.length(); i++) {
                 JSONObject currentBook = itemsArray.getJSONObject(i);
