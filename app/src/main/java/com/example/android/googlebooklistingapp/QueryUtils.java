@@ -138,47 +138,48 @@ public class QueryUtils {
 
         try {
             JSONObject jsonObject = new JSONObject(bookJSON);
-            JSONArray itemsArray = null;
+
 
             if(jsonObject.has("items")){
 
-                itemsArray = jsonObject.getJSONArray("items");
-            }
+               JSONArray itemsArray = jsonObject.getJSONArray("items");
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject currentBook = itemsArray.getJSONObject(i);
 
-            for (int i = 0; i < itemsArray.length(); i++) {
-                JSONObject currentBook = itemsArray.getJSONObject(i);
+                    JSONObject volumeInfoObject = currentBook.getJSONObject("volumeInfo");
+                    String title = volumeInfoObject.getString("title");
 
-                JSONObject volumeInfoObject = currentBook.getJSONObject("volumeInfo");
-                String title = volumeInfoObject.getString("title");
+                    String author = "Author: ";
+                    if (volumeInfoObject.has("authors")) {
+                        JSONArray authors = volumeInfoObject.getJSONArray("authors");
+                        for (int j = 0; j < authors.length(); j++) {
+                            author = author + authors.getString(j) + ",";
+                        }
 
-                String author = "Author: ";
-                if (volumeInfoObject.has("authors")) {
-                    JSONArray authors = volumeInfoObject.getJSONArray("authors");
-                    for (int j = 0; j < authors.length(); j++) {
-                        author = author + authors.getString(j) + ",";
+                        author = author.substring(0, author.length() - 1);
+                    } else {
+                        author = author + "No author found";
                     }
 
-                    author = author.substring(0, author.length() - 1);
-                } else {
-                    author = author + "No author found";
+                    String imgUrlString;
+                    Bitmap bmp;
+                    if (volumeInfoObject.has("imageLinks")) {
+                        JSONObject imageObject = volumeInfoObject.getJSONObject("imageLinks");
+                        imgUrlString = imageObject.getString("thumbnail");
+                        URL imgUrl = createUrl(imgUrlString);
+                        bmp = BitmapFactory.decodeStream(imgUrl.openConnection().getInputStream());
+                    } else {
+                        bmp = null;
+                    }
+
+                    Book book = new Book(title, author, bmp);
+                    books.add(book);
+
                 }
 
-                String imgUrlString;
-                Bitmap bmp;
-                if (volumeInfoObject.has("imageLinks")) {
-                    JSONObject imageObject = volumeInfoObject.getJSONObject("imageLinks");
-                    imgUrlString = imageObject.getString("thumbnail");
-                    URL imgUrl = createUrl(imgUrlString);
-                    bmp = BitmapFactory.decodeStream(imgUrl.openConnection().getInputStream());
-                } else {
-                    bmp = null;
-                }
-
-                Book book = new Book(title, author, bmp);
-                books.add(book);
-
+            }else{
+                return null;
             }
-
 
         } catch (JSONException e) {
 

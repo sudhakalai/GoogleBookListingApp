@@ -65,14 +65,17 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adapter.clear();
+                loadingIndicator.setVisibility(View.VISIBLE);
+                mEmptyStateTextView.setText("");
                 String searchText = searchTextView.getText().toString();
                 QUERY_URL = QUERY_URL+searchText;
-
-                loadingIndicator.setVisibility(View.VISIBLE);
 
                 if(isInternetConnectionAvailable()){
                     loaderManager.restartLoader(BOOK_LOADER_ID, null, MainActivity.this);
                 }else{
+                    adapter.clear();
+                    loadingIndicator.setVisibility(View.GONE);
                     mEmptyStateTextView.setText(R.string.no_internet);
                 }
 
